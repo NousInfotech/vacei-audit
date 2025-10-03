@@ -1,26 +1,180 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Vacei Color Theme - Light Mode */
+  --vacei-green: #00AA00;
+  --vacei-green-light: #90EE90;
+  --vacei-green-50: #F8FFF8;
+  --vacei-green-100: #E6FFE6;
+  --vacei-dark-text: #1E281E;
+  --vacei-gray: #323232;
+  --vacei-light-bg: #F8F8F8;
+  --vacei-dark-bg: #1A2B1A;
+  --vacei-cream: #F5F5DC;
+  
+  /* Sand color palette */
+  --sand-50: #FAFAF9;
+  --sand-100: #F5F5F4;
+  --sand-200: #E7E5E4;
+  --sand-300: #D6D3D1;
+  --sand-400: #A8A29E;
+  --sand-500: #78716C;
+  --sand-600: #57534E;
+  --sand-700: #44403C;
+  --sand-800: #292524;
+  --sand-900: #1C1917;
+  
+  /* Light mode defaults */
+  --background: var(--vacei-green-50);
+  --foreground: var(--vacei-dark-text);
+  --secondary: var(--vacei-gray);
+  --accent: var(--vacei-green);
+  --accent-foreground: #ffffff;
+  --muted: var(--vacei-light-bg);
+  --muted-foreground: var(--vacei-gray);
+  
+  /* Additional service colors from Vacei palette */
+  --service-green: #E0FFE0;
+  --service-yellow: #FFFFE0;
+  --service-blue: #E0F0FF;
+  --service-purple: #F0E0FF;
+  --service-red: #FFE0E0;
+  --service-orange: #FF6633;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  
+  /* Vacei brand colors */
+  --color-vacei-green: var(--vacei-green);
+  --color-vacei-green-light: var(--vacei-green-light);
+  --color-vacei-dark-text: var(--vacei-dark-text);
+  --color-vacei-gray: var(--vacei-gray);
+  --color-vacei-dark-bg: var(--vacei-dark-bg);
+  --color-vacei-cream: var(--vacei-cream);
+  
+  /* Sand colors */
+  --color-sand-50: var(--sand-50);
+  --color-sand-100: var(--sand-100);
+  --color-sand-200: var(--sand-200);
+  --color-sand-300: var(--sand-300);
+  --color-sand-400: var(--sand-400);
+  --color-sand-500: var(--sand-500);
+  --color-sand-600: var(--sand-600);
+  --color-sand-700: var(--sand-700);
+  --color-sand-800: var(--sand-800);
+  --color-sand-900: var(--sand-900);
+  
+  /* Service category colors */
+  --color-service-green: var(--service-green);
+  --color-service-yellow: var(--service-yellow);
+  --color-service-blue: var(--service-blue);
+  --color-service-purple: var(--service-purple);
+  --color-service-red: var(--service-red);
+  --color-service-orange: var(--service-orange);
+  
+  --font-sans: var(--font-inter-tight);
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--vacei-dark-bg);
+    --foreground: #ffffff;
+    --secondary: #E6FFE6;
+    --muted: var(--vacei-cream);
+    --muted-foreground: var(--vacei-gray);
   }
-}
+} */
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter Tight', 'Inter Tight Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Vacei-specific utility classes */
+.vacei-gradient {
+  background: linear-gradient(135deg, var(--vacei-green-50) 0%, var(--vacei-green-100) 100%);
+}
+
+.vacei-dark-gradient {
+  background: var(--vacei-dark-bg);
+}
+
+.vacei-button-primary {
+  background-color: var(--vacei-green);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.vacei-button-primary:hover {
+  background-color: #008800;
+}
+
+.vacei-button-secondary {
+  background-color: transparent;
+  color: var(--vacei-green);
+  border: 1px solid var(--vacei-green-light);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.vacei-button-secondary:hover {
+  background-color: var(--vacei-green-light);
+  color: var(--vacei-dark-text);
+}
+
+.vacei-text-heading {
+  color: var(--vacei-dark-text);
+  font-weight: 700;
+}
+
+.vacei-text-body {
+  color: var(--vacei-gray);
+}
+
+.vacei-card {
+  background: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 170, 0, 0.08);
+  border: 1px solid rgba(0, 170, 0, 0.1);
+}
+
+/* Timeline Animation - Now controlled by JavaScript scroll trigger */
+
+/* Floating animation for particles */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.2;
+  }
+  25% {
+    transform: translateY(-10px) translateX(5px);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-20px) translateX(-5px);
+    opacity: 0.8;
+  }
+  75% {
+    transform: translateY(-10px) translateX(8px);
+    opacity: 0.4;
+  }
+}
+
+.animate-float {
+  animation: float linear infinite;
 }
