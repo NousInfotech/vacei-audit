@@ -4,22 +4,38 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const PricingSection = () => {
   const [isTimelineVisible, setIsTimelineVisible] = useState(false);
+  const [scrollDirection, setScrollDirection] = useState<'down' | 'up'>('down');
   const timelineRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const direction = currentScrollY > lastScrollY.current ? 'down' : 'up';
+      setScrollDirection(direction);
+      lastScrollY.current = currentScrollY;
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsTimelineVisible(true);
+          } else {
+            // When section goes out of view, reset based on scroll direction
+            if (scrollDirection === 'up') {
+              setIsTimelineVisible(false);
+            }
           }
         });
       },
       {
-        threshold: 0.3, // Trigger when 30% of the timeline is visible
-        rootMargin: '0px 0px -100px 0px' // Start animation slightly before fully visible
+        threshold: 0.2, // Trigger when 20% of the timeline is visible
+        rootMargin: '0px 0px -50px 0px' // Start animation slightly before fully visible
       }
     );
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     const currentTimelineRef = timelineRef.current;
     if (currentTimelineRef) {
@@ -27,11 +43,12 @@ const PricingSection = () => {
     }
 
     return () => {
+      window.removeEventListener('scroll', handleScroll);
       if (currentTimelineRef) {
         observer.unobserve(currentTimelineRef);
       }
     };
-  }, []);
+  }, [scrollDirection]);
 
   return (
     <div className="relative bg-white overflow-hidden">
@@ -50,24 +67,24 @@ const PricingSection = () => {
       </div>
 
       {/* Main Content */}
-      <div className="relative w-full max-w-6xl mx-auto px-6 lg:px-8 py-16">
+      <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <div className="inline-block px-6 py-3 bg-green-100/50 backdrop-blur-sm rounded-full border border-green-200/50 mb-6">
-            <span className="text-green-700 text-sm font-medium tracking-wide uppercase">Simple Pricing</span>
+        <div className="text-center mb-8 lg:mb-12">
+          <div className="inline-block px-4 py-2 lg:px-6 lg:py-3 bg-green-100/50 backdrop-blur-sm rounded-full border border-green-200/50 mb-4 lg:mb-6">
+            <span className="text-green-700 text-xs lg:text-sm font-medium tracking-wide uppercase">Simple Pricing</span>
           </div>
           
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 antialiased tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 lg:mb-6 antialiased tracking-tight">
             Pricing & <span className="text-green-600">Engagement</span>
           </h2>
-          <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed px-4">
             One-time implementation + optional maintenance basis
           </p>
         </div>
 
-        {/* Pricing Timeline */}
-        <div className="relative mb-16" ref={timelineRef}>
+        {/* Desktop Pricing Timeline */}
+        <div className="relative mb-16 hidden lg:block" ref={timelineRef}>
           {/* Animated Timeline Line */}
           <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full rounded-full overflow-hidden">
             {/* Background gray line */}
@@ -215,9 +232,82 @@ const PricingSection = () => {
           </div>
         </div>
 
+        {/* Mobile & Tablet Pricing Cards */}
+        <div className="lg:hidden space-y-6 sm:space-y-8" ref={timelineRef}>
+          {/* Implementation Card */}
+          <div className="relative">
+            <div className="relative bg-gradient-to-br from-green-50/40 via-lime-50/30 to-white rounded-2xl p-6 shadow-xl border border-green-100/50 backdrop-blur-sm">
+              {/* Mobile Badge */}
+              <div className="inline-block px-3 py-1 bg-green-600/20 rounded-full border border-green-600/30 mb-4">
+                <span className="text-green-600 font-semibold text-sm">One-Time</span>
+              </div>
+              
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-lime-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-1">Implementation</h3>
+                  <p className="text-gray-600">One-time setup & configuration</p>
+                </div>
+              </div>
+              
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Complete setup and configuration of your accounting system
+              </p>
+              
+              <div className="space-y-3">
+                {["Setup & configuration", "Data migration", "System integrations", "Custom branding", "Team training"].map((item, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-green-600 rounded-full flex-shrink-0"></div>
+                    <span className="text-gray-600 text-sm">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Maintenance Card */}
+          <div className="relative">
+            <div className="relative bg-gradient-to-br from-green-50/40 via-lime-50/30 to-white rounded-2xl p-6 shadow-xl border border-green-100/50 backdrop-blur-sm">
+              {/* Mobile Badge */}
+              <div className="inline-block px-3 py-1 bg-green-600/20 rounded-full border border-green-600/30 mb-4">
+                <span className="text-green-600 font-semibold text-sm">Optional</span>
+              </div>
+              
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-lime-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-1">Maintenance & Support</h3>
+                  <p className="text-gray-600">Ongoing assistance</p>
+                </div>
+              </div>
+              
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Ongoing assistance and continuous system enhancements
+              </p>
+              
+              <div className="space-y-3">
+                {["System upgrades", "Feature enhancements", "Ongoing support", "Performance monitoring", "Technical assistance"].map((item, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-green-600 rounded-full flex-shrink-0"></div>
+                    <span className="text-gray-600 text-sm">{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Pricing CTA Text */}
-        <div className="text-center">
-          <p className="text-lg text-gray-700 leading-relaxed">
+        <div className="text-center mt-8 lg:mt-16">
+          <p className="text-base sm:text-lg text-gray-700 leading-relaxed px-4">
             To see exact pricing for your scope, <span className="text-green-600 font-semibold">Book a Demo</span> and receive a custom proposal.
           </p>
         </div>

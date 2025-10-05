@@ -1,10 +1,66 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const CTASection = () => {
+interface CTASectionProps {
+  backgroundColor: 'black' | 'white';
+  badgeText: string;
+  title: string;
+  subtitle: string;
+  primaryButtonText: string;
+  secondaryButtonText: string;
+  primaryButtonIcon?: React.ReactNode;
+  secondaryButtonIcon?: React.ReactNode;
+}
+
+const CTASection: React.FC<CTASectionProps> = ({
+  backgroundColor,
+  badgeText,
+  title,
+  subtitle,
+  primaryButtonText,
+  secondaryButtonText,
+  primaryButtonIcon,
+  secondaryButtonIcon
+}) => {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Predefined positions to avoid hydration mismatch
+  const particlePositions = [
+    { left: 23.7, top: 2.9, delay: 1.5, duration: 4.6 },
+    { left: 75.9, top: 95.2, delay: 2.9, duration: 4.1 },
+    { left: 7.5, top: 22.0, delay: 3.0, duration: 4.0 },
+    { left: 86.7, top: 25.8, delay: 0.9, duration: 3.7 },
+    { left: 33.7, top: 2.4, delay: 0.5, duration: 3.0 },
+    { left: 44.5, top: 29.9, delay: 0.0, duration: 3.1 },
+    { left: 98.2, top: 47.7, delay: 1.0, duration: 3.4 },
+    { left: 91.5, top: 87.9, delay: 0.3, duration: 4.3 },
+    { left: 95.7, top: 92.9, delay: 1.8, duration: 4.5 },
+    { left: 83.7, top: 58.1, delay: 2.8, duration: 4.0 },
+    { left: 69.4, top: 3.9, delay: 2.7, duration: 4.5 },
+    { left: 16.3, top: 70.8, delay: 0.8, duration: 3.9 },
+    { left: 12.0, top: 47.3, delay: 0.5, duration: 5.0 },
+    { left: 84.4, top: 24.5, delay: 0.3, duration: 3.1 },
+    { left: 78.7, top: 48.4, delay: 1.9, duration: 4.3 }
+  ];
+
+  const isDark = backgroundColor === 'black';
+  const bgClass = isDark ? 'bg-black' : 'bg-white';
+  const textColor = isDark ? 'text-white' : 'text-gray-900';
+  const subtextColor = isDark ? 'text-gray-300' : 'text-gray-700';
+  const badgeBgColor = isDark ? 'bg-green-600/20' : 'bg-green-100/50';
+  const badgeBorderColor = isDark ? 'border-green-600/30' : 'border-green-200/50';
+  const badgeTextColor = isDark ? 'text-green-400' : 'text-green-700';
+  const accentColor = isDark ? 'text-green-600' : 'text-green-600';
+  const particleColor = isDark ? 'bg-green-500/30' : 'bg-green-500/20';
+  const patternColor = isDark ? '%23059669' : '%23059669';
+
   return (
-    <div className="relative bg-black overflow-hidden">
+    <div className={`relative ${bgClass} overflow-hidden`}>
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-green-600/10 to-lime-600/5 rounded-full blur-3xl"></div>
@@ -15,76 +71,84 @@ const CTASection = () => {
       {/* Subtle Background Pattern */}
       <div className="absolute inset-0 opacity-[0.03]">
         <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23059669' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='${patternColor}' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
         }}></div>
       </div>
 
-      {/* Floating Particles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(15)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-green-500/30 rounded-full animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${3 + Math.random() * 2}s`
-            }}
-          ></div>
-        ))}
-      </div>
+      {/* Floating Particles - Only render on client */}
+      {isClient && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          {particlePositions.map((particle, i) => (
+            <div
+              key={i}
+              className={`absolute w-1 h-1 ${particleColor} rounded-full animate-float`}
+              style={{
+                left: `${particle.left}%`,
+                top: `${particle.top}%`,
+                animationDelay: `${particle.delay}s`,
+                animationDuration: `${particle.duration}s`
+              }}
+            ></div>
+          ))}
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="relative w-full max-w-6xl mx-auto px-6 lg:px-8 py-16">
         
         {/* Section Header */}
         <div className="text-center mb-12">
-          <div className="inline-block px-6 py-3 bg-green-600/20 backdrop-blur-sm rounded-full border border-green-600/30 mb-6">
-            <span className="text-green-400 text-sm font-medium tracking-wide uppercase">Get Started Today</span>
+          <div className={`inline-block px-6 py-3 ${badgeBgColor} backdrop-blur-sm rounded-full border ${badgeBorderColor} mb-6`}>
+            <span className={`${badgeTextColor} text-sm font-medium tracking-wide uppercase`}>{badgeText}</span>
           </div>
           
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 antialiased tracking-tight">
-            Ready to <span className="text-green-600">Simplify</span>
+          <h2 className={`text-4xl md:text-5xl lg:text-6xl font-bold ${textColor} mb-6 antialiased tracking-tight`}>
+            {title.split(' ').map((word, index) => (
+              word.toLowerCase() === 'smarter,' || word.toLowerCase() === 'platform?' || word.toLowerCase() === 'reinvented' || word.toLowerCase() === 'today'
+                ? <span key={index} className={`${accentColor} relative`}>{word} </span>
+                : <span key={index}>{word} </span>
+            ))}
           </h2>
-          <p className="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8">
-            Accounting & audit operations?
+          <p className={`text-lg md:text-xl ${subtextColor} max-w-4xl mx-auto leading-relaxed mb-8`}>
+            {subtitle}
           </p>
         </div>
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          {/* Primary CTA - Get a Demo */}
+          {/* Primary CTA */}
           <div className="group relative">
             {/* Glow effect */}
             <div className="absolute -inset-1 bg-gradient-to-r from-green-600 to-lime-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
             
             <button className="relative bg-gradient-to-r from-green-600 to-lime-500 text-white font-bold py-4 px-8 rounded-2xl shadow-2xl hover:shadow-green-500/25 transition-all duration-300 hover:scale-105 flex items-center gap-3 min-w-[200px] justify-center">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              Get a Demo
+              {primaryButtonIcon || (
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              )}
+              {primaryButtonText}
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>
           </div>
 
-          {/* Secondary CTA - Learn More for Firms */}
+          {/* Secondary CTA */}
           <div className="group relative">
-            <button className="relative bg-transparent border-2 border-green-600/50 text-green-400 font-bold py-4 px-8 rounded-2xl hover:border-green-600 hover:bg-green-600/10 transition-all duration-300 hover:scale-105 flex items-center gap-3 min-w-[220px] justify-center backdrop-blur-sm">
-              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              Learn More for Firms
+            <button className={`relative bg-transparent border-2 ${isDark ? 'border-green-600/50 text-green-400 hover:bg-green-600/10' : 'border-green-600/50 text-green-600 hover:bg-green-100/50'} font-bold py-4 px-8 rounded-2xl hover:border-green-600 transition-all duration-300 hover:scale-105 flex items-center gap-3 min-w-[220px] justify-center backdrop-blur-sm`}>
+              {secondaryButtonIcon || (
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              )}
+              {secondaryButtonText}
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </button>
           </div>
         </div>
-
- 
 
         {/* Floating Decorative Elements */}
         <div className="absolute top-20 left-20 w-32 h-32 bg-green-600/5 rounded-full blur-2xl animate-pulse"></div>

@@ -14,7 +14,14 @@ const Homepage = () => {
         <HowItWorksSection />
         <TrustSection />
         <PricingSection />
-        <CTASection />
+        <CTASection
+          backgroundColor="black"
+          badgeText="Get Started Today"
+          title="Ready to Simplify"
+          subtitle="Accounting & audit operations?"
+          primaryButtonText="Get a Demo"
+          secondaryButtonText="Learn More for Firms"
+        />
     </div>
   )
 }
