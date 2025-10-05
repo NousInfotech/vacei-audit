@@ -2,7 +2,40 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-const AuditFirmsFAQ = () => {
+interface AuditFirmsFAQProps {
+  title?: string;
+  questions?: Array<{ question: string; answer: string; }>;
+}
+
+const AuditFirmsFAQ = ({ 
+  title = "Frequently Asked Questions",
+  questions = [
+    {
+      question: "Can I white-label the portal fully (logo, domain)?",
+      answer: "Yes, the portal can be fully white-labeled with your firm's branding, logo, and even custom domain."
+    },
+    {
+      question: "If I don't take maintenance now, can I add it later?",
+      answer: "Absolutely. Our maintenance and support is optional and can be added or removed at any time."
+    },
+    {
+      question: "How are feature updates handled — do I get them automatically?",
+      answer: "Feature updates are included with maintenance contracts. Without maintenance, you can choose when to update."
+    },
+    {
+      question: "What integrations are already available?",
+      answer: "We support major accounting systems like Xero, QuickBooks, and many ERP systems. Contact us for specific integrations."
+    },
+    {
+      question: "How secure is the system and how is data protected?",
+      answer: "We use enterprise-grade security with SSL encryption, GDPR compliance, and regular security audits."
+    },
+    {
+      question: "How long does setup / onboarding take?",
+      answer: "Typical setup takes 2-4 weeks depending on complexity and number of clients to migrate."
+    }
+  ]
+}: AuditFirmsFAQProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -37,40 +70,7 @@ const AuditFirmsFAQ = () => {
     };
   }, []);
 
-  const faqs = [
-    {
-      question: "Can clients see my branding only?",
-      answer: "Yes, absolutely. Vacei is 100% white-labeled. Your clients will only see your firm's logo, colors, domain, and branding throughout their entire experience. They'll never know Vacei exists behind the scenes."
-    },
-    {
-      question: "What audit standards do you support?",
-      answer: "We support major international audit standards including ISA (International Standards on Auditing), GAAS (Generally Accepted Auditing Standards), and local standards. Our platform is designed to be flexible and can be configured to meet specific jurisdictional requirements."
-    },
-    {
-      question: "Can I add accounting modules later?",
-      answer: "Yes, our modular architecture allows you to start with audit-focused features and add accounting modules as your practice grows. You can seamlessly integrate accounting capabilities without disrupting your existing audit workflows."
-    },
-    {
-      question: "How is maintenance handled?",
-      answer: "Maintenance is completely optional and flexible. You can choose to handle updates yourself or opt for our maintenance service. When you do choose maintenance, we provide regular updates, bug fixes, security patches, and new features without disrupting your operations."
-    },
-    {
-      question: "How secure is audit data?",
-      answer: "Security is our top priority. We use enterprise-grade encryption (AES-256), secure data centers, regular security audits, role-based access controls, and comprehensive audit trails. All data is backed up regularly and we maintain SOC 2 compliance."
-    },
-    {
-      question: "How long does onboarding take?",
-      answer: "Typical onboarding takes 2-4 weeks depending on your requirements. This includes branded portal setup, template configuration, system integrations, user training, and initial data migration. We provide dedicated support throughout the process."
-    },
-    {
-      question: "Can I export or migrate data later?",
-      answer: "Absolutely. You maintain full control of your data. We provide comprehensive export capabilities in standard formats (CSV, PDF, Excel) and can assist with data migration if you ever need to move to another system. Your data belongs to you."
-    },
-    {
-      question: "What integrations are available?",
-      answer: "We offer integrations with major accounting systems (Xero, QuickBooks, Sage), ERPs, banking systems, and document management platforms. We also provide APIs for custom integrations. Our integration library continues to grow based on client needs."
-    }
-  ];
+  const faqs = questions;
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -102,11 +102,7 @@ const AuditFirmsFAQ = () => {
           </div>
           
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 antialiased tracking-tight">
-            Frequently Asked{' '}
-            <span className="text-green-400 relative">
-              Questions
-              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"></div>
-            </span>
+            {title}
           </h2>
           
           <p className="text-lg sm:text-xl md:text-2xl text-gray-300 leading-relaxed max-w-4xl mx-auto">

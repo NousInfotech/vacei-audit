@@ -2,7 +2,52 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-const AuditFirmsOfferings = () => {
+interface AuditFirmsOfferingsProps {
+  title?: string;
+  items?: Array<{ title: string; description: string; }>;
+}
+
+const AuditFirmsOfferings = ({ 
+  title = "Your Firm's White-Label Portal + Service Stack",
+  items = [
+    {
+      title: "White-Label Audit Portal",
+      description: "Deploy Vacei's audit engine under your firm's brand — clients see your portal, not ours."
+    },
+    {
+      title: "Centralized Client Management",
+      description: "Onboard, manage, monitor clients from one dashboard — see which ones need help, see performance, exceptions."
+    },
+    {
+      title: "Automation of Audit Tasks",
+      description: "Document collection, categorization, working paper preparation — your firm's team only deals with exceptions."
+    },
+    {
+      title: "Integrations & Imports",
+      description: "Connect with clients' systems (Xero, QuickBooks, local ERPs). Pull data in automatically without manual exports."
+    },
+    {
+      title: "Dashboards & Reports to Clients",
+      description: "Your clients get dashboards, live KPIs, audit reports — in your portal, under your branding."
+    },
+    {
+      title: "Working Papers & Audit Trail",
+      description: "Complete audit documentation, versioning, and compliance tracking white-labeled into your firm's portal."
+    },
+    {
+      title: "User / Role & Access Management",
+      description: "You control which users (partners, auditors, clients) can see what — multi-tenant security."
+    },
+    {
+      title: "Security, Versioning & Audit Trail",
+      description: "Full logs, versioning, encrypted data, backups — firm-level control and reporting."
+    },
+    {
+      title: "Support & Updates",
+      description: "Maintenance, bug fixes, enhancements are optional add-ons — you stay current with minimal burden."
+    }
+  ]
+}: AuditFirmsOfferingsProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -36,74 +81,12 @@ const AuditFirmsOfferings = () => {
     };
   }, []);
 
-  const offerings = [
-    {
-      title: "White-Label Audit Portal",
-      description: "Deploy Vacei's audit engine under your branding — your logo, domain, look and feel.",
-      icon: "🎨",
-      gradient: "from-green-500 to-emerald-500"
-    },
-    {
-      title: "Audit Planning & Risk Module",
-      description: "Define scope, set risk metrics, generate audit programs, customize test steps.",
-      icon: "📊",
-      gradient: "from-blue-500 to-cyan-500"
-    },
-    {
-      title: "Working Papers & Document Linking",
-      description: "Link audit procedures to documents, maintain indexes, cross-reference, version control.",
-      icon: "📋",
-      gradient: "from-emerald-500 to-green-500"
-    },
-    {
-      title: "Client Collaboration Portal",
-      description: "Clients upload documents, answer queries, track request status, all securely.",
-      icon: "🤝",
-      gradient: "from-green-500 to-blue-500"
-    },
-    {
-      title: "Review & Approval Workflows",
-      description: "Reviewer layers, comments, sign-off trails, escalation paths.",
-      icon: "✅",
-      gradient: "from-blue-500 to-emerald-500"
-    },
-    {
-      title: "Trial Balance Import & Mapping",
-      description: "Bring in TBs or accounting data, map to statement accounts, handle adjustments.",
-      icon: "⚖️",
-      gradient: "from-emerald-500 to-cyan-500"
-    },
-    {
-      title: "Exception / Anomaly Flagging",
-      description: "The system highlights unusual balances, outlier transactions, trends needing review.",
-      icon: "🚨",
-      gradient: "from-green-500 to-emerald-500"
-    },
-    {
-      title: "Audit Trail / Versioning / Logs",
-      description: "Full history of changes, who did what, when — for accountability and compliance.",
-      icon: "📝",
-      gradient: "from-blue-500 to-green-500"
-    },
-    {
-      title: "Integrations & APIs",
-      description: "Connect to accounting systems, ERP, data sources so audit context is richer.",
-      icon: "🔗",
-      gradient: "from-emerald-500 to-blue-500"
-    },
-    {
-      title: "Scalable for Multiple Engagements",
-      description: "Handle dozens or hundreds of clients; manage capacity; reuse templates.",
-      icon: "📈",
-      gradient: "from-green-500 to-emerald-500"
-    },
-    {
-      title: "Security & Compliance",
-      description: "Encryption, backups, role-based access, audit logs, data privacy.",
-      icon: "🔒",
-      gradient: "from-blue-500 to-emerald-500"
-    }
-  ];
+  const offerings = items.map((item, index) => ({
+    title: item.title,
+    description: item.description,
+    icon: ["🎨", "📊", "📋", "🔗", "📈", "📄", "👥", "🔒", "🛠️"][index] || "✨",
+    gradient: ["from-green-500 to-emerald-500", "from-blue-500 to-cyan-500", "from-purple-500 to-pink-500", "from-orange-500 to-red-500", "from-teal-500 to-blue-500", "from-indigo-500 to-purple-500", "from-pink-500 to-rose-500", "from-gray-500 to-slate-500", "from-yellow-500 to-orange-500"][index] || "from-green-500 to-emerald-500"
+  }));
 
   return (
     <div className="relative bg-transparent overflow-hidden">
@@ -131,11 +114,7 @@ const AuditFirmsOfferings = () => {
           </div>
           
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 antialiased tracking-tight">
-            What Vacei Offers{' '}
-            <span className="text-green-400 relative">
-              Audit Firms
-              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"></div>
-            </span>
+            {title}
           </h2>
           
           <p className="text-lg sm:text-xl md:text-2xl text-gray-300 leading-relaxed max-w-4xl mx-auto">

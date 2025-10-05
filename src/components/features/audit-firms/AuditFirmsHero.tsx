@@ -2,7 +2,21 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-const AuditFirmsHero = () => {
+interface AuditFirmsHeroProps {
+  title?: string;
+  subtitle?: string;
+  primaryCTA?: string;
+  secondaryCTA?: string;
+  trustText?: string;
+}
+
+const AuditFirmsHero = ({ 
+  title = "Modern Audit Technology — Under Your Brand",
+  subtitle = "Vacei gives audit firms a full-feature white-label audit portal, with automation, client collaboration, working papers, and review workflows — all branded to you.",
+  primaryCTA = "Schedule a Demo",
+  secondaryCTA = "See Features",
+  trustText = "Operated by A4 Services Limited (licensed audit & accounting firm) • SSL encrypted • GDPR compliant"
+}: AuditFirmsHeroProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -64,38 +78,30 @@ const AuditFirmsHero = () => {
             
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 antialiased tracking-tight leading-tight">
-              Modern Audit Technology —{' '}
-              <span className="text-green-600 relative">
-                Under Your Brand
-                <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-lime-500 rounded-full opacity-60"></div>
-              </span>
+              {title}
             </h1>
             
             {/* Subheadline */}
             <p className="text-lg sm:text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed max-w-2xl">
-              Vacei gives audit firms a full-feature white-label audit portal, with automation, client collaboration, working papers, and review workflows — all branded to you.
+              {subtitle}
             </p>
             
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <button className="group relative px-8 py-4 bg-gradient-to-r from-green-600 to-lime-600 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
-                <span className="relative z-10">Schedule a Demo</span>
+                <span className="relative z-10">{primaryCTA}</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-green-700 to-lime-700 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-lime-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
               </button>
               
               <button className="px-8 py-4 bg-white/80 backdrop-blur-sm text-gray-900 font-semibold rounded-2xl border-2 border-gray-200 hover:border-green-300 hover:bg-green-50/50 transition-all duration-300 transform hover:-translate-y-1">
-                See Features
+                {secondaryCTA}
               </button>
             </div>
             
             {/* Trust Microcopy */}
             <div className="text-sm text-gray-600 leading-relaxed">
-              <p>
-                <span className="font-semibold text-green-700">Operated by A4 Services Limited</span> (licensed audit & accounting firm) • 
-                <span className="text-green-600 font-medium"> SSL encrypted</span> • 
-                <span className="text-green-600 font-medium"> GDPR compliant</span>
-              </p>
+              <p>{trustText}</p>
             </div>
           </div>
           

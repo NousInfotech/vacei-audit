@@ -2,7 +2,15 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-const AuditFirmsIntroduction = () => {
+interface AuditFirmsIntroductionProps {
+  title?: string;
+  content?: string;
+}
+
+const AuditFirmsIntroduction = ({ 
+  title = "Built Specifically for Today's Audit Firms",
+  content = "Tired of inefficient audit processes, scattered working papers, and juggling multiple systems? Vacei is the all-in-one white-label solution built for firms that want to scale, automate, and strengthen their brand."
+}: AuditFirmsIntroductionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -62,15 +70,11 @@ const AuditFirmsIntroduction = () => {
             </div>
             
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 antialiased tracking-tight">
-              Tailored for Audit Practices{' '}
-              <span className="text-green-400 relative">
-                Ready to Modernize
-                <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"></div>
-              </span>
+              {title}
             </h2>
             
             <p className="text-lg sm:text-xl md:text-2xl text-gray-300 leading-relaxed max-w-4xl mx-auto">
-              Legacy audit tools, scattered Excel files, and manual documentation slow you down. Vacei is the white-label portal designed specifically for audit firms that want efficiency, consistency, and client experience — without sacrificing control.
+              {content}
             </p>
           </div>
 

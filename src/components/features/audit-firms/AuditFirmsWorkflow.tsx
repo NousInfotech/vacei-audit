@@ -2,7 +2,31 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-const AuditFirmsWorkflow = () => {
+interface AuditFirmsWorkflowProps {
+  title?: string;
+  steps?: Array<{ title: string; description: string; microcopy: string; }>;
+}
+
+const AuditFirmsWorkflow = ({ 
+  title = "Three Steps to Deploy & Use Vacei in Your Firm",
+  steps = [
+    {
+      title: "Onboard & Configure",
+      description: "We help you set up your branded portal, connect clients' systems, define user roles, migrate initial data.",
+      microcopy: "We set up your brand and clients"
+    },
+    {
+      title: "Automate & Manage",
+      description: "Data flows in, automation kicks in, your team reviews exceptions, handles escalations.",
+      microcopy: "Automation frees your team"
+    },
+    {
+      title: "Deliver, Monitor & Scale",
+      description: "Clients see dashboards, you monitor performance, add more clients, deploy modules like advisory.",
+      microcopy: "Grow without extra complexity"
+    }
+  ]
+}: AuditFirmsWorkflowProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -36,63 +60,19 @@ const AuditFirmsWorkflow = () => {
     };
   }, []);
 
-  const steps = [
-    {
-      number: "01",
-      title: "Onboard & Configure",
-      description: "We help you configure your branded instance, upload templates, connect to client accounting systems, define user roles.",
-      microcopy: "We set your environment & brand up.",
-      icon: (
-        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      ),
-      features: [
-        "Branded instance setup",
-        "Template configuration",
-        "System integrations",
-        "User role definition",
-        "Initial data migration"
-      ]
-    },
-    {
-      number: "02",
-      title: "Execute & Automate",
-      description: "You plan, set procedures, link tasks, run audit workflows. Automation helps with document linking, flagging, test suggestions.",
-      microcopy: "Core work is streamlined — your team focuses on judgments.",
-      icon: (
-        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
-        </svg>
-      ),
-      features: [
-        "Audit planning & procedures",
-        "Task linking & workflows",
-        "Document automation",
-        "Exception flagging",
-        "Test suggestions"
-      ]
-    },
-    {
-      number: "03",
-      title: "Review, Deliver & Scale",
-      description: "Review paths, sign-offs, client deliverables, maintain audit history, reuse templates, expand to new clients.",
-      microcopy: "Deliver audits under your brand. Add more clients easily.",
-      icon: (
-        <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
-      features: [
-        "Review & approval workflows",
-        "Client deliverables",
-        "Audit history maintenance",
-        "Template reuse",
-        "Client expansion"
-      ]
-    }
-  ];
+  const workflowSteps = steps.map((step, index) => ({
+    number: `0${index + 1}`,
+    title: step.title,
+    description: step.description,
+    microcopy: step.microcopy,
+    icon: (
+      <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      </svg>
+    ),
+    features: step.description.split('. ').slice(0, 5) // Split description into features
+  }));
 
   return (
     <div className="relative bg-gradient-to-br from-gray-50/30 via-white to-green-50/30 overflow-hidden">
@@ -113,11 +93,7 @@ const AuditFirmsWorkflow = () => {
           </div>
           
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 antialiased tracking-tight">
-            Deploying Vacei in Your Audit Practice —{' '}
-            <span className="text-green-600 relative">
-              3 Steps
-              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full"></div>
-            </span>
+            {title}
           </h2>
           
           <p className="text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed max-w-4xl mx-auto">
@@ -137,7 +113,7 @@ const AuditFirmsWorkflow = () => {
 
           {/* Steps */}
           <div className="space-y-16 lg:space-y-24">
-            {steps.map((step, index) => (
+            {workflowSteps.map((step, index) => (
               <div 
                 key={index} 
                 className={`relative flex flex-col lg:flex-row items-center gap-8 lg:gap-16 transition-all duration-1000 opacity-100 translate-y-0 ${

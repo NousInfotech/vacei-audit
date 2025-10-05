@@ -2,7 +2,22 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-const AuditFirmsAdvantages = () => {
+interface AuditFirmsAdvantagesProps {
+  title?: string;
+  points?: string[];
+}
+
+const AuditFirmsAdvantages = ({ 
+  title = "Your Competitive Edge",
+  points = [
+    "Your Brand Everywhere — clients always see your portal",
+    "Lower Operational Cost — automation reduces hours per client",
+    "Client Delight — real-time insights, dashboards, cleaner delivery",
+    "Scalable Growth — you don't need to proportionally increase staff",
+    "Backed by Experts — built and operated by accounting & audit professionals",
+    "Security & Control — you own the environment, data, access"
+  ]
+}: AuditFirmsAdvantagesProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -36,50 +51,12 @@ const AuditFirmsAdvantages = () => {
     };
   }, []);
 
-  const advantages = [
-    {
-      title: "100% White-Labeled",
-      description: "Clients never see Vacei branding — everything appears under your firm's identity.",
-      icon: "🎨",
-      gradient: "from-green-500 to-emerald-500"
-    },
-    {
-      title: "Unified Solution",
-      description: "No siloed tools for audit + accounting — everything works together seamlessly.",
-      icon: "🔗",
-      gradient: "from-blue-500 to-cyan-500"
-    },
-    {
-      title: "Automation Accelerates Work",
-      description: "Speed up processes without losing quality — focus on judgment, not paperwork.",
-      icon: "⚡",
-      gradient: "from-emerald-500 to-green-500"
-    },
-    {
-      title: "Superior Client Experience",
-      description: "Smooth document requests, real-time status updates, and professional interactions.",
-      icon: "💎",
-      gradient: "from-green-500 to-blue-500"
-    },
-    {
-      title: "Consistency & Standardization",
-      description: "Maintain audit quality and consistency across all engagements and team members.",
-      icon: "📊",
-      gradient: "from-blue-500 to-emerald-500"
-    },
-    {
-      title: "Security & Control",
-      description: "Built-in security, control, and traceability — your data, your rules.",
-      icon: "🔒",
-      gradient: "from-emerald-500 to-cyan-500"
-    },
-    {
-      title: "Backed by Audit Experts",
-      description: "Built and operated by A4 Services — we understand your workflows and challenges.",
-      icon: "👥",
-      gradient: "from-green-500 to-emerald-500"
-    }
-  ];
+  const advantages = points.map((point, index) => ({
+    title: point.split(' — ')[0] || point,
+    description: point.split(' — ')[1] || point,
+    icon: ["🎨", "🔗", "⚡", "💎", "📊", "🔒", "👥"][index] || "✨",
+    gradient: ["from-green-500 to-emerald-500", "from-blue-500 to-cyan-500", "from-emerald-500 to-green-500", "from-green-500 to-blue-500", "from-blue-500 to-emerald-500", "from-emerald-500 to-cyan-500", "from-green-500 to-emerald-500"][index] || "from-green-500 to-emerald-500"
+  }));
 
   return (
     <div className="relative bg-transparent overflow-hidden">
@@ -107,11 +84,7 @@ const AuditFirmsAdvantages = () => {
           </div>
           
           <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 antialiased tracking-tight">
-            Your{' '}
-            <span className="text-green-400 relative">
-              Competitive Advantage
-              <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full"></div>
-            </span>
+            {title}
           </h2>
           
           <p className="text-lg sm:text-xl md:text-2xl text-gray-300 leading-relaxed max-w-4xl mx-auto">
