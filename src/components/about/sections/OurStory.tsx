@@ -174,7 +174,7 @@ const OurStory = () => {
                   <div className="text-sm text-green-600 font-semibold mb-2">Achievement</div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">Industry Recognition</h3>
                   <p className="text-gray-600 leading-relaxed">
-                    Recently, our innovation in audit software was called a "game-changing solution" for professional auditors in Malta.
+                    Recently, our innovation in audit software was called a &ldquo;game-changing solution&rdquo; for professional auditors in Malta.
                   </p>
                 </div>
               </div>
@@ -186,7 +186,7 @@ const OurStory = () => {
         <div className={`mt-16 text-center transition-all duration-1000 delay-800 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-3xl p-8 border border-green-200 max-w-4xl mx-auto">
             <blockquote className="text-xl sm:text-2xl text-gray-700 font-medium italic mb-4">
-              "Technology should augment professionals, not replace them."
+              &ldquo;Technology should augment professionals, not replace them.&rdquo;
             </blockquote>
             <p className="text-gray-500">— Our Core Principle</p>
           </div>

@@ -143,8 +143,8 @@ const OurValues = () => {
           <div className="bg-gradient-to-br from-gray-800/30 via-gray-900/30 to-black/30 backdrop-blur-sm rounded-3xl p-8 border border-gray-700/50 max-w-4xl mx-auto shadow-2xl">
             <h3 className="text-2xl font-bold text-white mb-4">Living Our Values</h3>
             <p className="text-gray-300 text-lg leading-relaxed">
-              These values guide every decision we make, every solution we build, and every relationship we nurture. 
-              They're not just words on a page — they're the foundation of how we operate.
+                These values guide every decision we make, every solution we build, and every relationship we nurture.
+                They&apos;re not just words on a page — they&apos;re the foundation of how we operate.
             </p>
           </div>
         </div>

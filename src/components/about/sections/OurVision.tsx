@@ -146,7 +146,7 @@ const OurVision = () => {
             <div className="text-center mb-8">
               <h3 className="text-3xl font-bold text-white mb-4">The Road Ahead</h3>
               <p className="text-gray-300 text-lg max-w-3xl mx-auto">
-                Our journey is just beginning. We're committed to continuous innovation while preserving 
+                Our journey is just beginning. We&apos;re committed to continuous innovation while preserving 
                 the trust and integrity that define professional accounting and auditing.
               </p>
             </div>
@@ -196,7 +196,7 @@ const OurVision = () => {
         <div className={`mt-16 text-center transition-all duration-1000 delay-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-3xl p-8 border border-blue-200 max-w-4xl mx-auto">
             <blockquote className="text-xl sm:text-2xl text-gray-700 font-medium italic mb-4">
-              "The future of accounting and auditing is not just about technology — it's about technology that serves humanity."
+              &ldquo;The future of accounting and auditing is not just about technology — it&apos;s about technology that serves humanity.&rdquo;
             </blockquote>
             <p className="text-gray-500">— Our Vision Statement</p>
           </div>

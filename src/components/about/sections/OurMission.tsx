@@ -56,7 +56,7 @@ const OurMission = () => {
           </h2>
           
           <p className="text-lg sm:text-xl md:text-2xl text-gray-300 leading-relaxed max-w-4xl mx-auto">
-            We believe that accounting and audit shouldn't be a burden. Our mission is to make bookkeeping, financial statements, and audits effortless, transparent, and intelligent.
+            We believe that accounting and audit shouldn&apos;t be a burden. Our mission is to make bookkeeping, financial statements, and audits effortless, transparent, and intelligent.
           </p>
         </div>
 
@@ -127,7 +127,7 @@ const OurMission = () => {
         <div className={`mt-16 text-center transition-all duration-1000 delay-800 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="bg-gradient-to-br from-gray-800/30 via-gray-900/30 to-black/30 backdrop-blur-sm rounded-3xl p-8 border border-gray-700/50 max-w-4xl mx-auto shadow-2xl">
             <blockquote className="text-xl sm:text-2xl text-gray-200 font-medium italic mb-4">
-              "Technology should augment professionals, not replace them."
+              &ldquo;Technology should augment professionals, not replace them.&rdquo;
             </blockquote>
             <p className="text-gray-400">— Our Core Principle</p>
           </div>
