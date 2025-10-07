@@ -23,8 +23,8 @@ const Navbar = () => {
       ]
     },
     { name: 'Pricing', href: '/pricing' },
+    { name: 'Wizard Flow', href: '/wizard-flow' },
     { name: 'About Us', href: '/about' },
-    { name: 'Blog', href: '/resources' },
     { name: 'Contact', href: '/contact' }
   ];
 
