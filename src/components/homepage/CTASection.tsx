@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { usePersona } from '@/contexts/PersonaContext';
 
 interface CTASectionProps {
   backgroundColor: 'black' | 'white';
@@ -11,6 +13,7 @@ interface CTASectionProps {
   secondaryButtonText: string;
   primaryButtonIcon?: React.ReactNode;
   secondaryButtonIcon?: React.ReactNode;
+  isHomepage?: boolean; // New prop to distinguish homepage vs other pages
 }
 
 const CTASection: React.FC<CTASectionProps> = ({
@@ -21,8 +24,11 @@ const CTASection: React.FC<CTASectionProps> = ({
   primaryButtonText,
   secondaryButtonText,
   primaryButtonIcon,
-  secondaryButtonIcon
+  secondaryButtonIcon,
+  isHomepage = false
 }) => {
+  const { persona } = usePersona();
+  const router = useRouter();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -55,9 +61,17 @@ const CTASection: React.FC<CTASectionProps> = ({
   const badgeBgColor = isDark ? 'bg-green-600/20' : 'bg-green-100/50';
   const badgeBorderColor = isDark ? 'border-green-600/30' : 'border-green-200/50';
   const badgeTextColor = isDark ? 'text-green-400' : 'text-green-700';
-  const accentColor = isDark ? 'text-green-600' : 'text-green-600';
   const particleColor = isDark ? 'bg-green-500/30' : 'bg-green-500/20';
   const patternColor = isDark ? '%23059669' : '%23059669';
+
+  // Handle button clicks
+  const handlePrimaryClick = () => {
+    router.push('/wizard-flow');
+  };
+
+  const handleSecondaryClick = () => {
+    router.push('/wizard-flow');
+  };
 
   return (
     <div className={`relative ${bgClass} overflow-hidden`}>
@@ -103,14 +117,25 @@ const CTASection: React.FC<CTASectionProps> = ({
           </div>
           
           <h2 className={`text-4xl md:text-5xl lg:text-6xl font-bold ${textColor} mb-6 antialiased tracking-tight`}>
-            {title.split(' ').map((word, index) => (
-              word.toLowerCase() === 'smarter,' || word.toLowerCase() === 'platform?' || word.toLowerCase() === 'reinvented' || word.toLowerCase() === 'today'
-                ? <span key={index} className={`${accentColor} relative`}>{word} </span>
-                : <span key={index}>{word} </span>
-            ))}
+            {isHomepage ? (
+              <>
+                Ready to Simplify{' '}
+                <span className="text-green-600">
+                  {persona === 'business' ? 'Your Accounting?' : 'Your Firm Operations?'}
+                </span>
+              </>
+            ) : (
+              title
+            )}
           </h2>
           <p className={`text-lg md:text-xl ${subtextColor} max-w-4xl mx-auto leading-relaxed mb-8`}>
-            {subtitle}
+            {isHomepage ? (
+              persona === 'business' 
+                ? 'Get started with professional accounting & audit services today.'
+                : 'Scale your firm with our white-label accounting & audit platform.'
+            ) : (
+              subtitle
+            )}
           </p>
         </div>
 
@@ -121,13 +146,14 @@ const CTASection: React.FC<CTASectionProps> = ({
             {/* Glow effect */}
             <div className="absolute -inset-1 bg-gradient-to-r from-green-600 to-lime-500 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
             
-            <button className="relative bg-gradient-to-r from-green-600 to-lime-500 text-white font-bold py-4 px-8 rounded-2xl shadow-2xl hover:shadow-green-500/25 transition-all duration-300 hover:scale-105 flex items-center gap-3 min-w-[200px] justify-center">
-              {primaryButtonIcon || (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              )}
-              {primaryButtonText}
+            <button 
+              onClick={handlePrimaryClick}
+              className="relative bg-gradient-to-r from-green-600 to-lime-500 text-white font-bold py-4 px-8 rounded-2xl shadow-2xl hover:shadow-green-500/25 transition-all duration-300 hover:scale-105 flex items-center gap-3 min-w-[200px] justify-center"
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              {isHomepage ? (persona === 'business' ? 'Request Demo' : 'Get Proposal') : primaryButtonText}
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -136,13 +162,14 @@ const CTASection: React.FC<CTASectionProps> = ({
 
           {/* Secondary CTA */}
           <div className="group relative">
-            <button className={`relative bg-transparent border-2 ${isDark ? 'border-green-600/50 text-green-400 hover:bg-green-600/10' : 'border-green-600/50 text-green-600 hover:bg-green-100/50'} font-bold py-4 px-8 rounded-2xl hover:border-green-600 transition-all duration-300 hover:scale-105 flex items-center gap-3 min-w-[220px] justify-center backdrop-blur-sm`}>
-              {secondaryButtonIcon || (
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                </svg>
-              )}
-              {secondaryButtonText}
+            <button 
+              onClick={handleSecondaryClick}
+              className={`relative bg-transparent border-2 ${isDark ? 'border-green-600/50 text-green-400 hover:bg-green-600/10' : 'border-green-600/50 text-green-600 hover:bg-green-100/50'} font-bold py-4 px-8 rounded-2xl hover:border-green-600 transition-all duration-300 hover:scale-105 flex items-center gap-3 min-w-[220px] justify-center backdrop-blur-sm`}
+            >
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {isHomepage ? (persona === 'business' ? 'View Pricing' : 'Explore Solutions') : secondaryButtonText}
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>

@@ -1,4 +1,7 @@
+'use client';
+
 import React from 'react'
+import { PersonaProvider } from '@/contexts/PersonaContext'
 import HeroSection from './HeroSection'
 import ValuePropositionSection from './ValuePropositionSection'
 import HowItWorksSection from './HowItWorksSection'
@@ -8,7 +11,8 @@ import CTASection from './CTASection'
 
 const Homepage = () => {
   return (
-    <div>
+    <PersonaProvider>
+      <div>
         <HeroSection />
         <ValuePropositionSection />
         <HowItWorksSection />
@@ -21,8 +25,10 @@ const Homepage = () => {
           subtitle="Accounting & audit operations?"
           primaryButtonText="Get a Demo"
           secondaryButtonText="Learn More for Firms"
+          isHomepage={true}
         />
-    </div>
+      </div>
+    </PersonaProvider>
   )
 }
 

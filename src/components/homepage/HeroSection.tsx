@@ -1,11 +1,16 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { usePersona } from '@/contexts/PersonaContext';
+import PersonaToggle from '@/components/common/PersonaToggle';
 
 const HeroSection = () => {
+  const { persona } = usePersona();
+  const router = useRouter();
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const videoRef = useRef<HTMLIFrameElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   
   const words = ['Accounting.', 'Audit.', 'Expertise.', 'Unified.'];
   
@@ -17,10 +22,31 @@ const HeroSection = () => {
     return () => clearInterval(timer);
   }, [words.length]);
 
+  useEffect(() => {
+    // Auto-play video when component mounts
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.log("Auto-play was prevented:", error);
+      });
+    }
+  }, []);
+
   const handleVideoToggle = () => {
-    setIsPlaying(!isPlaying);
-    // Note: YouTube iframe API would be needed for actual play/pause control
-    // This is a visual toggle for now
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play().catch(error => {
+          console.log("Play was prevented:", error);
+        });
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  const handleRequestDemo = () => {
+    // Navigate to contact page or open demo request modal
+    router.push('/contact');
   };
 
   return (
@@ -77,21 +103,31 @@ const HeroSection = () => {
                 {/* Main Video Container */}
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white/80 backdrop-blur-sm bg-gradient-to-br from-green-50 to-lime-50 p-1">
                   <div className="aspect-[16/10] bg-gradient-to-br from-green-100 via-lime-50 to-green-50 relative overflow-hidden rounded-2xl">
-                    {/* Online Video Embed */}
-                    <iframe
+                    {/* Local Video */}
+                    <video
                       ref={videoRef}
-                      src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&mute=1&controls=1&modestbranding=1&rel=0"
-                      title="Vacei Demo Video"
-                      className="w-full h-full rounded-2xl"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
+                      className="w-full h-full rounded-2xl object-cover bg-black"
+                      loop
+                      muted
+                      autoPlay
+                      playsInline
+                      onPlay={() => setIsPlaying(true)}
+                      onPause={() => setIsPlaying(false)}
+                      onLoadedData={() => {
+                        if (videoRef.current) {
+                          videoRef.current.play().catch(() => {});
+                        }
+                      }}
+                    >
+                      <source src="/Vacei Portals.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
                     
-                    {/* Play/Pause Control Overlay */}
-                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl">
+                    {/* Play/Pause Control Overlay - Always visible */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                       <button 
                         onClick={handleVideoToggle}
-                        className="w-20 h-20 bg-white/90 backdrop-blur rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-transform shadow-2xl"
+                        className="pointer-events-auto w-20 h-20 bg-white/90 backdrop-blur rounded-full flex items-center justify-center cursor-pointer hover:scale-110 transition-all duration-300 shadow-2xl hover:bg-white"
                       >
                         {isPlaying ? (
                           <svg className="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
@@ -126,37 +162,58 @@ const HeroSection = () => {
 
             {/* Right Side - Enhanced Content Section */}
             <div className="order-1 lg:order-2 space-y-8">
-              {/* Enhanced Subheadline */}
+              {/* Persona Toggle */}
+              <PersonaToggle variant="minimal" className="mb-6" />
+              
+              {/* Enhanced Subheadline with Persona-Specific Content */}
               <div className="space-y-6">
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-                  Transform Your Business with
-                  <span className="block bg-gradient-to-r from-green-600 to-lime-600 bg-clip-text text-transparent">
-                    Smart Accounting
-                  </span>
+                  {persona === 'business' ? (
+                    <>
+                      We are your virtual accountants & auditors
+                      <span className="block bg-gradient-to-r from-green-600 to-lime-600 bg-clip-text text-transparent">
+                        — or your firm&apos;s white-label platform
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      White-label platform for
+                      <span className="block bg-gradient-to-r from-green-600 to-lime-600 bg-clip-text text-transparent">
+                        Accounting & Audit Firms
+                      </span>
+                    </>
+                  )}
                 </h2>
                 
                 <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-lg mx-auto lg:mx-0">
-            Vacei offers virtual accounting & auditing services plus white-label portals, all under one platform. Power your operations with automation and real professionals.
-          </p>
+                  {persona === 'business' ? (
+                    'Upload documents, automate workflows, get audits. Whether you run a business or a firm, Vacei adapts to your needs.'
+                  ) : (
+                    'Brand your portal, automate client workflows, deliver professional audits. Scale your firm with our white-label accounting & audit platform.'
+                  )}
+                </p>
               </div>
 
 
-              {/* Enhanced CTAs */}
+              {/* Enhanced CTAs with Persona-Specific Buttons */}
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                <button className="group relative px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-2xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 min-w-[160px]">
+                <button 
+                  onClick={handleRequestDemo}
+                  className="group relative px-8 py-4 text-base font-semibold text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-2xl transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 hover:scale-105 min-w-[160px]"
+                >
                   <span className="relative z-10 flex items-center justify-center gap-2">
-                Get a Demo
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </span>
+                    {persona === 'business' ? 'Request Demo' : 'Get Proposal'}
+                    <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </span>
                   <div className="absolute inset-0 bg-gradient-to-r from-green-700 to-green-800 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            </button>
+                </button>
 
                 <button className="px-8 py-4 text-base font-semibold text-gray-700 bg-white/80 hover:bg-white backdrop-blur rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl border-2 border-gray-200 hover:border-green-300 transform hover:-translate-y-1 hover:scale-105 min-w-[160px]">
-              See How It Works
-            </button>
-          </div>
+                  See Pricing
+                </button>
+              </div>
 
               {/* Enhanced Trust Badge */}
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 text-sm text-gray-600">

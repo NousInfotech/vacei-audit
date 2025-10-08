@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { PersonaProvider } from '@/contexts/PersonaContext';
 import AuditFirmsHero from '../../../components/features/audit-firms/AuditFirmsHero';
 import AuditFirmsIntroduction from '../../../components/features/audit-firms/AuditFirmsIntroduction';
 import AuditFirmsChallenges from '../../../components/features/audit-firms/AuditFirmsChallenges';
@@ -621,7 +622,8 @@ const DynamicPage = ({ pageType = 'audit' }: DynamicPageProps) => {
   };
 
   return (
-    <div className="min-h-screen">
+    <PersonaProvider>
+      <div className="min-h-screen">
       {/* Section 1: Hero - Light */}
       <AuditFirmsHero 
         title={config.hero.title}
@@ -693,6 +695,7 @@ const DynamicPage = ({ pageType = 'audit' }: DynamicPageProps) => {
         subtitle={config.cta.subtitle}
         primaryButtonText={config.cta.primaryButtonText}
         secondaryButtonText={config.cta.secondaryButtonText}
+        isHomepage={false}
         primaryButtonIcon={
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -704,7 +707,8 @@ const DynamicPage = ({ pageType = 'audit' }: DynamicPageProps) => {
           </svg>
         }
       />
-    </div>
+      </div>
+    </PersonaProvider>
   );
 };
 
