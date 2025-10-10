@@ -1,7 +1,18 @@
 import React from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const HomePage = () => {
+  const router = useRouter();
+
+  const handleRequestDemo = () => {
+    router.push('/wizard-flow');
+  };
+
+  const handleViewPricing = () => {
+    router.push('/pricing');
+  };
+
   return (
     <div className="min-h-screen bg-vacei-gradient">
       <div className="max-w-6xl mx-auto px-8 py-20">
@@ -24,10 +35,16 @@ const HomePage = () => {
             Streamline compliance, manage workflows, and grow your business with confidence.
           </p>
           <div className="flex gap-4 justify-center">
-            <button className="vacei-button-primary text-lg px-8 py-4">
+            <button 
+              onClick={() => router.push('/pricing')}
+              className="vacei-button-primary text-lg px-8 py-4"
+            >
               Get Started Free
             </button>
-            <button className="vacei-button-secondary text-lg px-8 py-4">
+            <button 
+              onClick={handleRequestDemo}
+              className="vacei-button-secondary text-lg px-8 py-4"
+            >
               Request Demo
             </button>
           </div>
@@ -79,10 +96,16 @@ const HomePage = () => {
               Let us handle your compliance and business services needs.
             </p>
             <div className="flex gap-4 justify-center">
-              <button className="bg-white text-vacei-dark-text px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+              <button 
+                onClick={() => router.push('/pricing')}
+                className="bg-white text-vacei-dark-text px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+              >
                 Create Free Account
               </button>
-              <button className="border border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-vacei-dark-text transition-colors">
+              <button 
+                onClick={handleRequestDemo}
+                className="border border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-vacei-dark-text transition-colors"
+              >
                 Request a Demo
               </button>
             </div>

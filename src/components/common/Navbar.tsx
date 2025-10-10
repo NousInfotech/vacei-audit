@@ -151,7 +151,58 @@ const Navbar = () => {
           <div className="lg:hidden pb-4 animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="space-y-1 pt-2">
               {menuItems.map((item) => {
-                const isActive = pathname === item.href;
+                const isActive = pathname === item.href || (item.hasDropdown && item.dropdownItems?.some(dropdownItem => pathname === dropdownItem.href));
+                
+                if (item.hasDropdown) {
+                  return (
+                    <div key={item.name} className="space-y-1">
+                      <button
+                        onClick={() => setIsFeaturesOpen(!isFeaturesOpen)}
+                        className={`w-full text-left px-4 py-3 text-base font-medium rounded-lg transition-all duration-200 flex items-center justify-between ${
+                          isActive
+                            ? 'text-vacei-green bg-green-50'
+                            : 'text-gray-700 hover:text-vacei-green hover:bg-gray-50'
+                        }`}
+                      >
+                        <span>{item.name}</span>
+                        <svg 
+                          className={`w-4 h-4 transition-transform duration-200 ${
+                            isFeaturesOpen ? 'rotate-180' : ''
+                          }`} 
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      
+                      {/* Mobile Dropdown Items */}
+                      {isFeaturesOpen && (
+                        <div className="ml-4 space-y-1">
+                          {item.dropdownItems?.map((dropdownItem) => (
+                            <Link
+                              key={dropdownItem.name}
+                              href={dropdownItem.href}
+                              className={`block px-4 py-2 text-sm rounded-lg transition-all duration-200 ${
+                                pathname === dropdownItem.href
+                                  ? 'text-vacei-green bg-green-50'
+                                  : 'text-gray-600 hover:text-vacei-green hover:bg-gray-50'
+                              }`}
+                              onClick={() => {
+                                setIsMenuOpen(false);
+                                setIsFeaturesOpen(false);
+                              }}
+                            >
+                              {dropdownItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+                
                 return (
                   <Link
                     key={item.name}

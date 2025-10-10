@@ -70,7 +70,7 @@ const CTASection: React.FC<CTASectionProps> = ({
   };
 
   const handleSecondaryClick = () => {
-    router.push('/wizard-flow');
+    router.push('/pricing');
   };
 
   return (

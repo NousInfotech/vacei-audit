@@ -125,8 +125,8 @@ const HeroSection = () => {
   };
 
   const handleRequestDemo = () => {
-    // Navigate to contact page or open demo request modal
-    router.push('/contact');
+    // Navigate to wizard flow page
+    router.push('/wizard-flow');
   };
 
   return (
@@ -166,8 +166,8 @@ const HeroSection = () => {
                       : 'translateX(-50%) translateY(-50%) scale(0.75)'
                   }}
                 >
-                  <h1 className="text-4xl sm:text-5xl md:text-7xl 
-                  lg:text-8xl xl:text-[9rem] 2xl:text-[12rem] 
+                  <h1 className="text-4xl sm:text-5xl md:text-6xl 
+                  lg:text-7xl xl:text-[9rem] 2xl:text-[10rem] 
                   font-bold leading-none text-gray-900 whitespace-nowrap antialiased subpixel-antialiased" style={{ fontSmooth: 'always', WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' }}>
                     {word}
                   </h1>
@@ -296,7 +296,10 @@ const HeroSection = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-green-700 to-green-800 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </button>
 
-                <button className="px-8 py-4 text-base font-semibold text-gray-700 bg-white/80 hover:bg-white backdrop-blur rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl border-2 border-gray-200 hover:border-green-300 transform hover:-translate-y-1 hover:scale-105 min-w-[160px]">
+                <button 
+                  onClick={() => router.push('/pricing')}
+                  className="px-8 py-4 text-base font-semibold text-gray-700 bg-white/80 hover:bg-white backdrop-blur rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl border-2 border-gray-200 hover:border-green-300 transform hover:-translate-y-1 hover:scale-105 min-w-[160px]"
+                >
                   See Pricing
                 </button>
               </div>

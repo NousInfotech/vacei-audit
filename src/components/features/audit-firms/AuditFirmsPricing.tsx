@@ -224,7 +224,16 @@ const AuditFirmsPricing = ({
                 
                 {/* CTA Button */}
                 <div className="text-center">
-                  <button className={`w-full px-6 py-3 bg-gradient-to-r ${tier.color} text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-105`}>
+                  <button 
+                    onClick={() => {
+                      if (tier.id === 3) {
+                        window.location.href = '/contact';
+                      } else {
+                        window.location.href = '/wizard-flow';
+                      }
+                    }}
+                    className={`w-full px-6 py-3 bg-gradient-to-r ${tier.color} text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 transform hover:scale-105`}
+                  >
                     {tier.id === 3 ? 'Contact Us' : 'Request Demo'}
                   </button>
                 </div>
