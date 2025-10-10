@@ -166,8 +166,8 @@ const HeroSection = () => {
                       : 'translateX(-50%) translateY(-50%) scale(0.75)'
                   }}
                 >
-                  <h1 className="text-4xl sm:text-5xl md:text-8xl 
-                  lg:text-9xl xl:text-[10rem] 2xl:text-[12rem] 
+                  <h1 className="text-4xl sm:text-5xl md:text-7xl 
+                  lg:text-8xl xl:text-[9rem] 2xl:text-[12rem] 
                   font-bold leading-none text-gray-900 whitespace-nowrap antialiased subpixel-antialiased" style={{ fontSmooth: 'always', WebkitFontSmoothing: 'antialiased', MozOsxFontSmoothing: 'grayscale' }}>
                     {word}
                   </h1>
