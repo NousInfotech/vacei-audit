@@ -2,7 +2,7 @@ import React from 'react'
 
 const Team = () => {
   return (
-    <div className="relative w-screen bg-black -mx-6 lg:-mx-8 py-20">
+    <div className="relative w-screen bg-black py-20" style={{ marginLeft: 'calc(-50vw + 50%)', marginRight: 'calc(-50vw + 50%)' }}>
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
         <div className="relative bg-[#fbf8f3] rounded-3xl p-12 border border-green-100/50 shadow-xl backdrop-blur-sm">
           <div className="text-center mb-16">

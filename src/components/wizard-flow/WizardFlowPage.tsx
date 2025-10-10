@@ -21,6 +21,8 @@ const WizardFlowPage = () => {
     painPoints: '',
     requirements: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -72,6 +74,38 @@ const WizardFlowPage = () => {
       case 5: return true; // Optional step
       case 6: return true;
       default: return false;
+    }
+  };
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      const response = await fetch('/api/wizard-flow', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          persona,
+          selectedServices,
+          scaleInfo,
+          contactInfo,
+          additionalDetails,
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Error submitting wizard flow:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -382,17 +416,45 @@ const WizardFlowPage = () => {
                     </div>
                   </div>
                   
-                  <div className="bg-green-50 border border-green-200 rounded-xl p-6">
-                    <div className="flex items-center gap-3 mb-3">
-                      <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span className="text-green-800 font-semibold">Ready to Submit!</span>
+                  {/* Submission Status */}
+                  {submitStatus === 'success' ? (
+                    <div className="bg-green-50 border border-green-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-3">
+                        <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span className="text-green-800 font-semibold">Successfully Submitted! 🎉</span>
+                      </div>
+                      <p className="text-green-700 text-sm">
+                        Thank you for completing our wizard! We&apos;ve received your information and are preparing your personalized demo. 
+                        You should receive a confirmation email shortly, and our team will contact you within 4-6 hours to schedule your demo.
+                      </p>
                     </div>
-                    <p className="text-green-700 text-sm">
-                      Thanks for your input! Someone from Vacei will reach out shortly to set up your personalized demo. In the meantime, we&apos;ll prepare a walkthrough tailored to your needs.
-                    </p>
-                  </div>
+                  ) : submitStatus === 'error' ? (
+                    <div className="bg-red-50 border border-red-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-3">
+                        <svg className="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span className="text-red-800 font-semibold">Submission Failed</span>
+                      </div>
+                      <p className="text-red-700 text-sm">
+                        We encountered an error while submitting your information. Please try again or contact us directly at info@vacei.com.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="bg-green-50 border border-green-200 rounded-xl p-6">
+                      <div className="flex items-center gap-3 mb-3">
+                        <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span className="text-green-800 font-semibold">Ready to Submit!</span>
+                      </div>
+                      <p className="text-green-700 text-sm">
+                        Thanks for your input! Someone from Vacei will reach out shortly to set up your personalized demo. In the meantime, we&apos;ll prepare a walkthrough tailored to your needs.
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -427,18 +489,39 @@ const WizardFlowPage = () => {
             </div>
 
             <button
-              onClick={nextStep}
-              disabled={currentStep === 6 || !canProceed()}
+              onClick={currentStep === 6 ? handleSubmit : nextStep}
+              disabled={currentStep === 6 ? (isSubmitting || submitStatus === 'success') : !canProceed()}
               className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 ${
-                currentStep === 6 || !canProceed()
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-green-600 text-white hover:bg-green-700 shadow-lg'
+                currentStep === 6 
+                  ? (isSubmitting || submitStatus === 'success')
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'bg-green-600 text-white hover:bg-green-700 shadow-lg'
+                  : !canProceed()
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'bg-green-600 text-white hover:bg-green-700 shadow-lg'
               }`}
             >
-              {currentStep === 6 ? 'Submit & Schedule Demo' : 'Next'}
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
+              {currentStep === 6 ? (
+                isSubmitting ? (
+                  <>
+                    <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Submitting...
+                  </>
+                ) : submitStatus === 'success' ? (
+                  'Submitted Successfully!'
+                ) : (
+                  'Submit & Schedule Demo'
+                )
+              ) : (
+                'Next'
+              )}
+              {currentStep !== 6 && (
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              )}
             </button>
           </div>
         </div>
