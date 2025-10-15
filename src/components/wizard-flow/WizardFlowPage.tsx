@@ -368,7 +368,7 @@ const WizardFlowPage = () => {
                 </div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Additional Notes</h2>
                 <p className="text-gray-600 mb-12 text-center max-w-md mx-auto">
-                  Any additional information you'd like to share with us.
+                  Any additional information you&apos;d like to share with us.
                 </p>
                 
                 <div className="space-y-6">
@@ -378,7 +378,7 @@ const WizardFlowPage = () => {
                       value={additionalDetails.requirements}
                       onChange={(e) => setAdditionalDetails(prev => ({ ...prev, requirements: e.target.value }))}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors h-32 resize-none"
-                      placeholder="Any additional information you'd like to share..."
+                      placeholder="Any additional information you&apos;d like to share..."
                     />
                   </div>
                   
@@ -392,7 +392,7 @@ const WizardFlowPage = () => {
                         value={additionalDetails.requirements}
                         onChange={(e) => setAdditionalDetails(prev => ({ ...prev, requirements: e.target.value }))}
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors h-32 resize-none"
-                        placeholder="Any additional information you'd like to share..."
+                        placeholder="Any additional information you&apos;d like to share..."
                       />
                     </div>
                   ) : (
