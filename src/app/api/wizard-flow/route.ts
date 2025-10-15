@@ -39,6 +39,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Check if SMTP environment variables are configured
+    if (!process.env.SMTP_EMAIL || !process.env.SMTP_PASSWORD) {
+      console.error('SMTP environment variables not configured');
+      return NextResponse.json(
+        { error: 'Email service not configured. Please contact support.' },
+        { status: 500 }
+      );
+    }
+
     // Create transporter
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -48,10 +57,21 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // Verify transporter configuration
+    try {
+      await transporter.verify();
+    } catch (error) {
+      console.error('SMTP configuration error:', error);
+      return NextResponse.json(
+        { error: 'Email service configuration error. Please contact support.' },
+        { status: 500 }
+      );
+    }
+
     // Email content for Vacei team
     const teamEmailContent = {
       from: process.env.SMTP_EMAIL,
-      to: process.env.CONTACT_EMAIL || 'info@vacei.com',
+      to: 'info@vacei.com',
       subject: `New Wizard Flow Submission: ${persona === 'business' ? 'Business Owner' : 'Accounting/Audit Firm'} - ${company}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto;">
@@ -257,8 +277,22 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Error processing wizard flow submission:', error);
+    
+    // Provide more specific error messages based on the error type
+    let errorMessage = 'Failed to process wizard flow submission';
+    
+    if (error instanceof Error) {
+      if (error.message.includes('Invalid login')) {
+        errorMessage = 'Email authentication failed. Please check SMTP credentials.';
+      } else if (error.message.includes('ENOTFOUND') || error.message.includes('ECONNREFUSED')) {
+        errorMessage = 'Unable to connect to email service. Please try again later.';
+      } else if (error.message.includes('timeout')) {
+        errorMessage = 'Email service timeout. Please try again.';
+      }
+    }
+    
     return NextResponse.json(
-      { error: 'Failed to process wizard flow submission' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

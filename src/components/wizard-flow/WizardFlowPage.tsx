@@ -98,6 +98,27 @@ const WizardFlowPage = () => {
 
       if (response.ok) {
         setSubmitStatus('success');
+        // Reset all form data after successful submission
+        setTimeout(() => {
+          setPersona(null);
+          setSelectedServices([]);
+          setScaleInfo('');
+          setContactInfo({
+            fullName: '',
+            email: '',
+            company: '',
+            phone: '',
+            country: ''
+          });
+          setAdditionalDetails({
+            currentSoftware: '',
+            timeline: '',
+            painPoints: '',
+            requirements: ''
+          });
+          setCurrentStep(1);
+          setSubmitStatus('idle');
+        }, 3000); // Reset after 3 seconds to allow user to see success message
       } else {
         setSubmitStatus('error');
       }
@@ -345,38 +366,65 @@ const WizardFlowPage = () => {
                 <div className="w-20 h-20 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-8">
                   <span className="text-3xl font-bold text-white">5</span>
                 </div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">A few extra questions (optional)</h2>
+                <h2 className="text-3xl font-bold text-gray-900 mb-4 text-center">Additional Notes</h2>
                 <p className="text-gray-600 mb-12 text-center max-w-md mx-auto">
-                  Optional — the more we know, the more tailored the demo will be.
+                  Any additional information you'd like to share with us.
                 </p>
                 
                 <div className="space-y-6">
-                  {[
-                    { key: 'currentSoftware', label: 'Current accounting / ERP / software used', type: 'text', placeholder: 'e.g., QuickBooks, Xero, Excel' },
-                    { key: 'timeline', label: 'Desired go-live or timeline', type: 'text', placeholder: 'e.g., Within 1 month, Q1 2024' },
-                    { key: 'painPoints', label: 'Key pain points / challenges you currently face', type: 'textarea', placeholder: 'What challenges are you facing?' },
-                    { key: 'requirements', label: 'Any special requirements (multi-entity, multi-currency, compliance needs)', type: 'textarea', placeholder: 'Any specific needs or requirements?' }
-                  ].map((field) => (
-                    <div key={field.key} className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-700">{field.label}</label>
-                      {field.type === 'textarea' ? (
-                        <textarea
-                          value={additionalDetails[field.key as keyof typeof additionalDetails]}
-                          onChange={(e) => setAdditionalDetails(prev => ({ ...prev, [field.key]: e.target.value }))}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors h-24 resize-none"
-                          placeholder={field.placeholder}
-                        />
-                      ) : (
-                        <input
-                          type={field.type}
-                          value={additionalDetails[field.key as keyof typeof additionalDetails]}
-                          onChange={(e) => setAdditionalDetails(prev => ({ ...prev, [field.key]: e.target.value }))}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors"
-                          placeholder={field.placeholder}
-                        />
-                      )}
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-gray-700">Additional notes</label>
+                    <textarea
+                      value={additionalDetails.requirements}
+                      onChange={(e) => setAdditionalDetails(prev => ({ ...prev, requirements: e.target.value }))}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors h-32 resize-none"
+                      placeholder="Any additional information you'd like to share..."
+                    />
+                  </div>
+                  
+                  {/* Commented out optional questions - keeping for future reference */}
+                  {/*
+                  {persona === 'business' ? (
+                    // For business owners, only show a single notes field
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700">Notes to add or additional notes</label>
+                      <textarea
+                        value={additionalDetails.requirements}
+                        onChange={(e) => setAdditionalDetails(prev => ({ ...prev, requirements: e.target.value }))}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors h-32 resize-none"
+                        placeholder="Any additional information you'd like to share..."
+                      />
                     </div>
-                  ))}
+                  ) : (
+                    // For firms, show all the detailed questions
+                    [
+                      { key: 'currentSoftware', label: 'Current accounting / ERP / software used', type: 'text', placeholder: 'e.g., QuickBooks, Xero, Excel' },
+                      { key: 'timeline', label: 'Desired go-live or timeline', type: 'text', placeholder: 'e.g., Within 1 month, Q1 2024' },
+                      { key: 'painPoints', label: 'Key pain points / challenges you currently face', type: 'textarea', placeholder: 'What challenges are you facing?' },
+                      { key: 'requirements', label: 'Any special requirements (multi-entity, multi-currency, compliance needs)', type: 'textarea', placeholder: 'Any specific needs or requirements?' }
+                    ].map((field) => (
+                      <div key={field.key} className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700">{field.label}</label>
+                        {field.type === 'textarea' ? (
+                          <textarea
+                            value={additionalDetails[field.key as keyof typeof additionalDetails]}
+                            onChange={(e) => setAdditionalDetails(prev => ({ ...prev, [field.key]: e.target.value }))}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors h-24 resize-none"
+                            placeholder={field.placeholder}
+                          />
+                        ) : (
+                          <input
+                            type={field.type}
+                            value={additionalDetails[field.key as keyof typeof additionalDetails]}
+                            onChange={(e) => setAdditionalDetails(prev => ({ ...prev, [field.key]: e.target.value }))}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-colors"
+                            placeholder={field.placeholder}
+                          />
+                        )}
+                      </div>
+                    ))
+                  )}
+                  */}
                 </div>
               </div>
             )}
@@ -428,6 +476,8 @@ const WizardFlowPage = () => {
                       <p className="text-green-700 text-sm">
                         Thank you for completing our wizard! We&apos;ve received your information and are preparing your personalized demo. 
                         You should receive a confirmation email shortly, and our team will contact you within 4-6 hours to schedule your demo.
+                        <br/><br/>
+                        <span className="text-green-600 font-medium">Form will reset automatically in a few seconds...</span>
                       </p>
                     </div>
                   ) : submitStatus === 'error' ? (
